@@ -64,40 +64,6 @@ public class BotPolling extends TelegramLongPollingBot {
                     "\nUntuk dukungan sekolah/kota lain bisa request ke telegram @rizkimaulanaakbar";
             return result;
         }
-//        else if(cmdLowerCase.contains("subscribe")) {
-//            String[] parser = command.split(" ");
-//            if(!parser[0].equalsIgnoreCase("subscribe")) {
-//                return "Operasi salah";
-//            }
-//            else if(parser.length<=1) {
-//                return "Silahkan masukkan kode sekolah";
-//            }
-//            else if(parser.length>2) {
-//                return "Silahkan masukkan format dengan benar";
-//            }
-//            else {
-//                String code = "0";
-//                switch (parser[1]) {
-//                    case "smada": {
-//                        code = "103";
-//                    }
-//                    break;
-//                    case "smaga": {
-//                        code = "105";
-//                    }
-//                    break;
-//                    case "smansa": {
-//                        code = "102";
-//                    }
-//                    break;
-//                }
-//                RegistrarInformation registrarInformation = scrap.getSchoolStatistic(code);
-//                ArrayList<RegistrarInformation> current = ScrapperPpdbBotApplication.subscriber.get(chatId);
-//                current.stream().forEach(current -> {
-//                    if()
-//                });
-//            }
-//        }
         else if(cmdLowerCase.contains("cek")) {
             String[] parser = command.split(" ");
             if(!parser[0].equalsIgnoreCase("cek")) {
