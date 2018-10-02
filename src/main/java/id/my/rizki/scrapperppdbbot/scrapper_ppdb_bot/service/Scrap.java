@@ -18,35 +18,27 @@ import java.util.List;
 @Component
 public class Scrap {
 
+
+    private double min = 400;
+    private double max = 0;
+
     public RegistrarInformation getSchoolStatistic (String idClassroom) {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect("https://13.ppdbjatim.net/pengumuman/pengumuman_penerimaan/sma/sekolah/"
-                    + String.valueOf(idClassroom)).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Document doc = getWebpages(idClassroom);
+
         Elements elements = doc.select("tbody");
         List<RegistrarDetails>registrarDetails = new ArrayList<>();
         Elements elementsScName = doc.select("strong");
         Element elementScName = elementsScName.first();
-        double min = 400;
-        double max = 0;
         String school = elementScName.text();
         int value = 0;
         double average = 0;
         for(Element element : elements) {
             Elements trs = element.select("tr");
-            String[][] trtd = new String[trs.size()][];
+            String[][] trtd = splitToTrTd(trs);
             value = trs.size();
             int sum = 0;
-            for (int i = 0; i < trs.size(); i++) {
-                Elements tds = trs.get(i).select("td");
-                trtd[i] = new String[tds.size()];
-                for (int j = 0; j < tds.size(); j++) {
-                    trtd[i][j] = tds.get(j).text();
-                }
-            }
+
             RegistrarDetails u20 = new RegistrarDetails(new int[]{00, 200}, 0);
             RegistrarDetails u25 = new RegistrarDetails(new int[]{200, 250}, 0);
             RegistrarDetails u27 = new RegistrarDetails(new int[]{250, 270}, 0);
@@ -82,6 +74,28 @@ public class Scrap {
         }
         return RegistrarInformation.builder().min(min).max(max).details(registrarDetails).
                 value(value).average(average).school(school).build();
+    }
+
+    private String[][] splitToTrTd(Elements trs) {
+        String[][] trtd = new String[trs.size()][];
+        for (int i = 0; i < trs.size(); i++) {
+            Elements tds = trs.get(i).select("td");
+            trtd[i] = new String[tds.size()];
+            for (int j = 0; j < tds.size(); j++) {
+                trtd[i][j] = tds.get(j).text();
+            }
+        }
+        return trtd;
+    }
+
+    private Document getWebpages(String idClassroom) {
+        try {
+            return Jsoup.connect("https://13.ppdbjatim.net/pengumuman/pengumuman_penerimaan/sma/sekolah/"
+                    + String.valueOf(idClassroom)).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
